@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> Images Transfer with Flask </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<script>
+$('#spinnernya').hide();
+</script>
+<div class="container" style="margin-top: 150px; margin-bottom: 150px;">
+  <h2>Please Upload Your Image </h2>
+  <form action="https://dilanreal2.pythonanywhere.com/api/image_upload" method="POST" enctype="multipart/form-data" name="formnya" id="formnya">
+    <div class="form-group">
+      <label for="gambar">Browse Image:</label>
+      <input type="file" class="form-control" name="gambar" id="gambar" placeholder="Insert The Images" accept="image/*">
+    </div>
+    <button type="button" name="submitGambar" id="submitGambar" class="btn btn-primary">
+        <i class="fa fa-upload" aria-hidden="true"></i> Upload Image</button>
+
+    <button type="button" name="lihatGallery" id="lihatGallery" class="btn btn-outline-danger">
+        <i class="fa fa-eye" aria-hidden="true"></i> View Gallery</button>
+  </form>
+  <div class="spinner-border" name="spinnernya" id="spinnernya" style="margin-top: 5px;"></div>
+  <p name="hasil" id="hasil" style="font-family:helvetica; margin-top: 150px;">
+  <p class="lead">
+  <center><h4>Universitas Stikubank (Unisbank) Semarang <br> Tugas Akhir Semester</h4>
+  <p class="lead">
+      <br> Anggota Kelompok :
+  <br>Dilan Allya Barqi - 17.01.53.0070
+  <br>Vido Rizqy Setiardo - 17.01.53.0074
+  <br>Dea Ofitasari - 17.01.53.0105</p></p></center>
+</div>
+<script>
+$(document).ready(function(){
+$('#spinnernya').hide();
+$('#submitGambar').click(function(){
+var form_data = new FormData($('#formnya')[0]);
+
+$.ajax({
+        type:'POST',
+        crossDomain: true,
+        processData: false,
+        contentType: false,
+        url: "https://dilanreal2.pythonanywhere.com/api/image_upload",
+        data:form_data,
+        error:function(xhr, ajaxOptions, thrownError){
+        //alert("Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!");
+        $('#spinnernya').hide();
+        $('#hasil').html("Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!");
+        },
+        cache:false,
+        beforeSend:function(request){
+        //request.setRequestHeader("Content-Type", "multipart/form-data");
+        $('#spinnernya').show();
+        },
+        success:function(s){
+	        if(s['code'] == "01")
+	        {
+	        	//GAGAL
+	            //alert(s['message']);
+	            $('#spinnernya').hide();
+	            $('#hasil').html(s['message']);
+	        }
+
+	        if(s['code'] == "00")
+	        {
+	            //SUKSES
+	        	//alert(s['message']);
+	        	$('#spinnernya').hide();
+	        	$('#hasil').html(s['message']);
+	        }
+        }
+        });
+});
+
+$('#lihatGallery').click(function(){
+window.location.href = 'https://dilanreal2.pythonanywhere.com/gallery';
+});
+});
+</script>
+</body>
+</html>

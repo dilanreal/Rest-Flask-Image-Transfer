@@ -1,0 +1,6 @@
+Sebelum mengimplementasikan kedalam pythonanywhere. 
+Harap buka console Bash dan Install
+1. pip3.8 install --user Flask-Cors
+2. pip install --user opencv-python
+3. pip3.8 install --user opencv-python
+4. pip3.8 install --user jsonpickle
